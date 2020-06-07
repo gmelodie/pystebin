@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.schemas import User, UserCreate
@@ -8,10 +9,15 @@ from app import crud
 router = APIRouter()
 
 
-@router.get('/')
-async def get_user(user: User, db: Session = Depends(get_db)):
-    #TODO: test if user does not exist
-    return crud.get_user(db, user.id)
+@router.get('/', status_code=200)
+async def get_user(username: str, db: Session = Depends(get_db)):
+    user = crud.get_user_by_username(db, username)
+
+    if not user: #TODO: enhance
+        error =  {"error": "no such user"}
+        return JSONResponse(status_code=404, content=error)
+
+    return {"username": user.username, "password": user.password}
 
 
 @router.post('/')
