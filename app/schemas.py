@@ -1,6 +1,23 @@
 from typing import List
 from pydantic import BaseModel
 
+class BinBase(BaseModel):
+    name: str = None
+    title: str = None
+
+
+class BinCreate(BinBase):
+    owner_id: int
+    password: str
+
+
+class Bin(BinBase):
+    id: int
+    # TODO: token?
+
+    class Config():
+        orm_mode = True
+
 
 class UserBase(BaseModel):
     username: str
@@ -12,26 +29,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    bins: List[Bin] = []
-
-    class Config():
-        orm_mode = True
-
-
-class BinBase(BaseModel):
-    name: str
-    title: str = None
-
-
-class BinCreate(BinBase):
-    owner_id: int
-    password: str
-
-
-class Bin(BinBase):
-    id: int
-    content: str
-    # TODO: token?
+    # TODO: password?
+    # bins: List[Bin] = []
 
     class Config():
         orm_mode = True

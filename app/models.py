@@ -9,9 +9,10 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, index=True)
-    # hashed_password = Column(String)
+    # TODO: hash password
+    password = Column(String)
 
-    bins = relationship("Bin", backpopulates="owner")
+    bins = relationship("Bin", back_populates="owner")
 
 
 class Bin(Base):
@@ -20,8 +21,9 @@ class Bin(Base):
     id = Column(Integer, primary_key=True, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String, index=True)
+    title = Column(String)
     text = Column(String)
+    password = Column(String)
     # TODO: token
-    # TODO: password
 
-    owner = relationship("User", backpopulates="bins")
+    owner = relationship("User", back_populates="bins")

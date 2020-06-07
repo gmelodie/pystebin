@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from app.routers import bins, users
+from app import models, schemas, crud
+from app.database import engine, SessionLocal
 
 app = FastAPI()
+
+models.Base.metadata.create_all(bind=engine)
 
 
 @app.get('/')
