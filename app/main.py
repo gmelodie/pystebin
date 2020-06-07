@@ -1,17 +1,12 @@
 from fastapi import FastAPI
-from app.routers import bins, users
-from app import models, schemas, crud
-from app.database import engine, SessionLocal
 
-app = FastAPI()
+from app.routers import bins, users
+from app.database import engine
+from app import models, schemas, crud, utils
 
 models.Base.metadata.create_all(bind=engine)
 
-
-@app.get('/')
-async def root():
-    return {"message": "Hello World"}
-
+app = FastAPI()
 
 app.include_router(
     bins.router,
@@ -23,4 +18,10 @@ app.include_router(
     prefix='/users',
     tags=["users"],
 )
+
+
+@app.get('/')
+async def root():
+    return {"message": "Hello World"}
+
 
